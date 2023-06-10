@@ -44,3 +44,16 @@ Here's an overview of the functionalities it offers:
 The goal of using this sample application is to offer a realistic environment for understanding and experimenting with container components. The variety of features mimic those you would expect to encounter in a professional development project. It serves to make the workshop exercises both educational and relatable to real-world application development.
 
 * https://github.com/aws-containers/retail-store-sample-app
+
+Before deploying a workload to a Kubernetes distribution like EKS, it must be packaged as a container image and published to a container registry. While this workshop doesn't cover basic container topics, rest assured that the sample application has container images readily available in Amazon Elastic Container Registry (ECR) for the labs we'll tackle today.
+
+The table below offers links to the ECR Public repository for each component of our sample application, alongside the Dockerfile used to build each one. The Dockerfiles serve as a guide to how the container images were built, and the ECR Public repositories store the ready-to-use images.
+
+| Component | ECR Public Repository | Dockerfile |
+| ----------- | ------------------------ | ------------ |
+| UI          | [Repository](https://gallery.ecr.aws/aws-containers/retail-store-sample-ui) | [Dockerfile](https://github.com/aws-containers/retail-store-sample-app/blob/main/images/java17/Dockerfile) |
+| Catalog     | [Link](#)                       | [Link](#)   |
+| Cart           | [Link](#)                       | [Link](#)   |
+| Checkout   | [Link](#)                       | [Link](#)   |
+
+By providing these resources, we ensure you have all the necessary tools at your disposal for a smooth and effective workshop experience.
