@@ -20,7 +20,7 @@ opentelemetry-operator-system   Active   6h19m
 ```
 All of the listed entries are Namespaces for system components that were already installed. We'll filter out these system Namespaces and only focus on the ones we've created by using Kubernetes labels:
 ```
-$ kubectl get namespaces -l app.kubernetes.io/created-by=eks-workshop
+$ kubectl get ns -l app.kubernetes.io/created-by=eks-workshop
 No resources found
 ```
 The first step we'll take is to deploy the catalog component independently. You can find the manifests for this component in the /workspace/manifests/catalog directory:
@@ -180,7 +180,7 @@ pod/catalog-mysql-0 condition met
 ```
 Now that the Pods are operational, we can examine their logs. For instance, let's take a look at the logs for the catalog API:
 ```
-$ kubectl logs -n catalog deployment/catalog
+$ kubectl logs -n catalog deploy/catalog
 2023/06/10 23:08:56 Running database migration...
 2023/06/10 23:08:56 Schema migration applied
 2023/06/10 23:08:56 Connecting to catalog-mysql:3306/catalog?timeout=5s
@@ -194,7 +194,7 @@ You can "tail" the kubectl logs in real time by using the '-f' option with the c
 
 In Kubernetes, we have the ease of horizontally scaling the number of catalog Pods:
 ```
-$ kubectl scale -n catalog --replicas 3 deployment/catalog
+$ kubectl scale -n catalog --replicas 3 deploy/catalog
 deployment.apps/catalog scaled
 $ kubectl wait --for=condition=Ready pods --all -n catalog --timeout=180s
 pod/catalog-69c6bf994c-fsjgd condition met
@@ -211,7 +211,7 @@ catalog-mysql   ClusterIP   172.20.9.72      <none>        3306/TCP   10m
 ```
 As these Services are internal to the cluster, direct access to them from the Internet or even the VPC is not possible. However, we can utilize the `exec` command to gain access to an existing Pod in the EKS cluster, enabling us to verify the functionality of the catalog API:
 ```
-$ kubectl -n catalog exec deployment/catalog -- curl -s catalog.catalog.svc/catalogue | jq .                                             
+$ kubectl -n catalog exec deploy/catalog -- curl -s catalog.catalog.svc/catalogue | jq .                                             
 [
   {
     "id": "510a0d7e-8e83-4193-b483-e27e09ddc34d",
