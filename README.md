@@ -1,5 +1,5 @@
-# eks
-Workshop based on the following:
+# eks-workshop
+## Workshop based on the following:
 * https://www.eksworkshop.com/docs/introduction/
 
 All the steps will be performed from AWS Cloud9. 
