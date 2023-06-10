@@ -1,6 +1,6 @@
 # eks
 
-All the steps will be performed from AWS Cloud Shell.
+All the steps will be performed from AWS Cloud9.
 
 Install Terraform:
 ```
