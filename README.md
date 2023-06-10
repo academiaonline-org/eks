@@ -4,9 +4,9 @@ All the steps will be performed from AWS Cloud Shell.
 
 Install Terraform:
 ```
-yum install -y yum-utils
-yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-yum -y install terraform
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum -y install terraform
 terraform version
 
 ```
