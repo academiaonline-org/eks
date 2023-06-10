@@ -21,6 +21,10 @@ Install Terraform:
 wget https://releases.hashicorp.com/terraform/1.3.9/terraform_1.3.9_linux_amd64.zip
 unzip terraform_1.3.9_linux_amd64.zip
 install terraform /usr/local/bin/
+
+yum install -y yum-utils
+yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+yum -y install terraform
 terraform version
 
 ```
@@ -36,6 +40,7 @@ git clone https://github.com/aws-samples/eks-workshop-v2.git
 cd eks-workshop-v2
 git checkout latest
 cd terraform
+sed -i s/3.19.0/5.0.0/ modules/cluster/vpc.tf
 
 ```
 To initiate Terraform and create the supporting infrastructure, execute the following command:
@@ -44,8 +49,6 @@ terraform init
 terraform plan
 
 ```
-When you run `terraform init`, it will initialize your Terraform working directory and download any necessary provider plugins. After running `terraform init`, you can run `terraform apply` to create the infrastructure defined in your Terraform configuration files.
-
 Make sure that you review the plan before approving the `terraform apply` command as this will make changes to your infrastructure:
 ```
 terraform apply --auto-approve
