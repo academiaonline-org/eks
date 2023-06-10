@@ -52,8 +52,12 @@ The table below offers links to the ECR Public repository for each component of 
 | Component | ECR Public Repository | Dockerfile |
 | ----------- | ------------------------ | ------------ |
 | UI          | [Repository](https://gallery.ecr.aws/aws-containers/retail-store-sample-ui) | [Dockerfile](https://github.com/aws-containers/retail-store-sample-app/blob/main/images/java17/Dockerfile) |
-| Catalog     | [Link](#)                       | [Link](#)   |
-| Cart           | [Link](#)                       | [Link](#)   |
-| Checkout   | [Link](#)                       | [Link](#)   |
+| Catalog          | [Repository](https://gallery.ecr.aws/aws-containers/retail-store-sample-catalog) | [Dockerfile](https://github.com/aws-containers/retail-store-sample-app/blob/main/images/go/Dockerfile) |
+| Shopping cart          | [Repository](https://gallery.ecr.aws/aws-containers/retail-store-sample-cart) | [Dockerfile](https://github.com/aws-containers/retail-store-sample-app/blob/main/images/java17/Dockerfile) |
+| Checkout          | [Repository](https://gallery.ecr.aws/aws-containers/retail-store-sample-checkout) | [Dockerfile](https://github.com/aws-containers/retail-store-sample-app/blob/main/images/nodejs/Dockerfile) |
+| Orders          | [Repository](https://gallery.ecr.aws/aws-containers/retail-store-sample-orders) | [Dockerfile](https://github.com/aws-containers/retail-store-sample-app/blob/main/images/java17/Dockerfile) |
+| Assets          | [Repository](https://gallery.ecr.aws/aws-containers/retail-store-sample-assets) | [Dockerfile](https://github.com/aws-containers/retail-store-sample-app/blob/main/src/assets/Dockerfile) |
 
 By providing these resources, we ensure you have all the necessary tools at your disposal for a smooth and effective workshop experience.
+
+
