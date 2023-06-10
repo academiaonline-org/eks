@@ -1,37 +1,13 @@
 # eks
 
-All the steps will be performed from a Linux terminal (I am using an EC2 instance). You need to run a BASH shell. You can do it as root or as a normal user:
-```
-sudo su --login root
+All the steps will be performed from AWS Cloud Shell.
 
-```
-Remove unwanted aliases if necessary:
-```
-unalias rm cp mv
-
-```
-Install git and docker if not yet available:
-```
-yum install -y docker git
-systemctl enable --now docker
-
-```
 Install Terraform:
 ```
-wget https://releases.hashicorp.com/terraform/1.3.9/terraform_1.3.9_linux_amd64.zip
-unzip terraform_1.3.9_linux_amd64.zip
-install terraform /usr/local/bin/
-
 yum install -y yum-utils
 yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 yum -y install terraform
 terraform version
-
-```
-You need enough AWS privileges (AdministratorAccess will work). For this purpose you need to create a new Access Key in your AWS IAM Security Credentials and then configure the AWS credentials in your Linux terminal:
-* https://console.aws.amazon.com/iam/home
-```bash
-aws configure
 
 ```
 Now you can clone the remote repository:
