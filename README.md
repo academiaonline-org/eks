@@ -1,4 +1,6 @@
 # eks
+Workshop based on the following:
+* https://www.eksworkshop.com/docs/introduction/
 
 All the steps will be performed from AWS Cloud9. 
 You will need an account with enough AWS privileges (AdministratorAccess will work).
