@@ -41,6 +41,7 @@ cd terraform
 To initiate Terraform and create the supporting infrastructure, execute the following command:
 ```bash
 terraform init
+terraform plan
 
 ```
 When you run `terraform init`, it will initialize your Terraform working directory and download any necessary provider plugins. After running `terraform init`, you can run `terraform apply` to create the infrastructure defined in your Terraform configuration files.
