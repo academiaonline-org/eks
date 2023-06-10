@@ -30,3 +30,17 @@ terraform apply --auto-approve
 ```
 If after running the Terraform script you do not see the Cloud9 instance named eks-workshop do the following:
 * https://www.eksworkshop.com/docs/misc/cloud9-access
+
+The sample application for these workshop labs mirrors a basic web store, providing practical container components for our exercises. The application is designed to imitate a typical online shopping experience.
+
+Here's an overview of the functionalities it offers:
+
+1. **Product Catalog**: This feature allows customers to explore various products. It lists all the available products along with their details, making it easier for the customer to find what they need.
+
+2. **Shopping Cart**: This is where the chosen items are collected. Customers can add or remove items from their cart as per their preferences. The cart updates in real time, giving customers control over their potential purchase.
+
+3. **Checkout Process**: Once customers are ready with their selection, they can move to the checkout process. Here they review their cart, provide shipping information, and complete the payment to finalize their order.
+
+The goal of using this sample application is to offer a realistic environment for understanding and experimenting with container components. The variety of features mimic those you would expect to encounter in a professional development project. It serves to make the workshop exercises both educational and relatable to real-world application development.
+
+* https://github.com/aws-containers/retail-store-sample-app
