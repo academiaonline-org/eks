@@ -2,15 +2,7 @@
 
 All the steps will be performed from AWS Cloud9.
 
-Install Terraform:
-```
-sudo yum install -y yum-utils
-sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-sudo yum -y install terraform
-terraform version
-
-```
-Now you can clone the remote repository:
+Clone the remote repository:
 ```
 git clone https://github.com/aws-samples/eks-workshop-v2.git
 cd eks-workshop-v2
