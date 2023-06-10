@@ -22,4 +22,5 @@ Make sure that you review the plan before approving the `terraform apply` comman
 terraform apply --auto-approve
 
 ```
-
+If after running the Terraform script you do not see the Cloud9 instance named eks-workshop do the following:
+* https://www.eksworkshop.com/docs/misc/cloud9-access
