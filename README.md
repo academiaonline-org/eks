@@ -4,7 +4,7 @@ Workshop based on the following:
 
 All the steps will be performed from AWS Cloud9. 
 You will need an account with enough AWS privileges (AdministratorAccess will work).
-For this purpose you need to create a new Access Key in your AWS IAM Security Credentials and then configure the AWS credentials in your Linux terminal:
+For this purpose you need to create a new Access Key in your AWS IAM Security Credentials and then configure the AWS credentials in your AWS Cloud9 terminal:
 * https://console.aws.amazon.com/iam/home
 ```bash
 aws configure
