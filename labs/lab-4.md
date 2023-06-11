@@ -57,3 +57,83 @@ If you see that the nodes are distributed over multiple subnets in various avail
 By distributing the nodes across multiple subnets in different availability zones, the managed node group provides fault tolerance and enables your applications to continue running even if a single availability zone becomes unavailable. This high availability configuration helps maintain the overall availability and reliability of your applications deployed on the EKS cluster.
 
 The distribution of nodes across multiple availability zones is an important design consideration to ensure the resilience and availability of your Kubernetes workloads in production environments.
+
+To update your managed node group configuration and add additional nodes using the Amazon EKS Console, follow these steps:
+
+1. Go to the Amazon EKS console by navigating to https://console.aws.amazon.com/eks/home#/clusters.
+2. Select your eks-workshop cluster.
+3. Click on the "Compute" tab.
+4. Select the specific node group that you want to edit.
+5. Choose the "Edit" button.
+
+On the "Edit node group" page, you will find the "Node group scaling configuration" section which includes settings for "Desired size," "Minimum size," and "Maximum size." To add an additional node, you can increase the values of "Minimum size" and "Desired size" from 2 to 3, or as per your requirements.
+
+After making the necessary changes, scroll down and click on the "Save changes" button to update the managed node group configuration.
+
+Please note that you can also use the `eksctl scale nodegroup` command to scale your node group from the command line if you prefer a CLI-based approach.
+
+To retrieve the current nodegroup scaling configuration and view the minimum size, maximum size, and desired capacity of nodes using the eksctl command, you can use the following command:
+```
+$ eksctl get nodegroup --name $EKS_DEFAULT_MNG_NAME --cluster $EKS_CLUSTER_NAME
+CLUSTER         NODEGROUP                                       STATUS  CREATED                 MIN SIZE        MAX SIZE        DESIRED CAPACITY        INSTANCE TYPE   IMAGE ID ASG NAME                                                                         TYPE
+eks-workshop    managed-ondemand-20230610163837883200000027     ACTIVE  2023-06-10T16:38:40Z    2               6               2                       m5.large        AL2_x86_64eks-managed-ondemand-20230610163837883200000027-2ac45316-4734-5123-9494-43265ac89da3    managed
+```
+This command will display the details of the specified node group, including the scaling configuration.
+
+Once you have retrieved the current configuration, you can modify the scaling settings as needed. To change the minimum size, maximum size, and desired capacity of nodes, you can use the eksctl scale nodegroup command.
+
+Here's an example command to scale the node group:
+```
+$ eksctl scale nodegroup --name $EKS_DEFAULT_MNG_NAME --cluster $EKS_CLUSTER_NAME --nodes 3 --nodes-min 3 --nodes-max 6
+2023-06-11 22:24:44 [ℹ]  scaling nodegroup "managed-ondemand-20230610163837883200000027" in cluster eks-workshop
+2023-06-11 22:24:44 [ℹ]  waiting for scaling of nodegroup "managed-ondemand-20230610163837883200000027" to complete
+2023-06-11 22:25:15 [ℹ]  nodegroup successfully scaled
+```
+To update a node group using the AWS CLI, you can use the update-nodegroup-config command:
+```
+$ aws eks update-nodegroup-config --cluster-name $EKS_CLUSTER_NAME --nodegroup-name $EKS_DEFAULT_MNG_NAME --scaling-config minSize=3,maxSize=6,desiredSize=3
+{
+    "update": {
+        "id": "472c8022-d784-3e23-9ca9-7a11bf22ee2f",
+        "status": "InProgress",
+        "type": "ConfigUpdate",
+        "params": [
+            {
+                "type": "MinSize",
+                "value": "3"
+            },
+            {
+                "type": "MaxSize",
+                "value": "6"
+            },
+            {
+                "type": "DesiredSize",
+                "value": "3"
+            }
+        ],
+        "createdAt": "2023-06-11T22:28:36.503000+00:00",
+        "errors": []
+    }
+}
+```
+After making changes to the node group through the Amazon EKS Console or the eksctl command, it may take approximately 2-3 minutes for the node provisioning and configuration changes to be applied. Let's fetch the node group configuration again and examine the minimum size, maximum size, and desired capacity of nodes using the eksctl command provided below:
+```
+$ eksctl get nodegroup --name $EKS_DEFAULT_MNG_NAME --cluster $EKS_CLUSTER_NAME
+CLUSTER         NODEGROUP                                       STATUS  CREATED                 MIN SIZE        MAX SIZE        DESIRED CAPACITY        INSTANCE TYPE   IMAGE ID ASG NAME                                                                         TYPE
+eks-workshop    managed-ondemand-20230610163837883200000027     ACTIVE  2023-06-10T16:38:40Z    3               6               3                       m5.large        AL2_x86_64eks-managed-ondemand-20230610163837883200000027-2ac45316-4734-5123-9494-43265ac89da3    managed
+```
+You can also review the updated worker node count using the following command, which lists all nodes in our managed node group by applying a filter based on the label:
+```
+$ kubectl get no -l eks.amazonaws.com/nodegroup=$EKS_DEFAULT_MNG_NAME
+NAME                                          STATUS   ROLES    AGE    VERSION
+ip-10-42-10-170.ap-south-1.compute.internal   Ready    <none>   29h    v1.23.15-eks-49d8fe8
+ip-10-42-11-136.ap-south-1.compute.internal   Ready    <none>   29h    v1.23.15-eks-49d8fe8
+ip-10-42-12-113.ap-south-1.compute.internal   Ready    <none>   3m2s   v1.23.15-eks-49d8fe8
+```
+Notice that the node is currently in a NotReady status, which occurs when the new node is still in the process of joining the cluster. To monitor the progress and wait until all nodes report as Ready, we can use the kubectl wait command:
+```
+$ kubectl wait --for=condition=Ready no -l eks.amazonaws.com/nodegroup=$EKS_DEFAULT_MNG_NAME --timeout=300s
+node/ip-10-42-10-170.ap-south-1.compute.internal condition met
+node/ip-10-42-11-136.ap-south-1.compute.internal condition met
+node/ip-10-42-12-113.ap-south-1.compute.internal condition met
+```
