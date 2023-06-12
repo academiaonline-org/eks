@@ -16,3 +16,57 @@ In addition to the benefits of managed node groups, EKS managed node groups with
 
 These features provide an efficient and reliable way to leverage Spot capacity within your EKS cluster, maximizing cost savings while maintaining application availability.
 
+The EKS-Optimized Amazon Linux AMI is the recommended base image for Amazon EKS nodes. It is built on Amazon Linux 2 and regularly updated with Kubernetes patches and security updates. It is best practice to use the latest version of the EKS-Optimized AMI when adding nodes to your EKS cluster and upgrading existing nodes.
+
+EKS managed node groups provide automated AMI update capability. The process of upgrading the AMI for managed node groups consists of four phases:
+
+1. Setup: 
+   - Create a new version of the Amazon EC2 Launch Template associated with the Auto Scaling group, using the latest AMI.
+   - Point the Auto Scaling group to use the latest version of the launch template.
+   - Determine the maximum number of nodes to upgrade in parallel by configuring the updateconfig property for the node group.
+
+2. Scale Up: 
+   - During the upgrade process, launch upgraded nodes in the same availability zone as the nodes being upgraded.
+   - Increment the maximum size and desired size of the Auto Scaling group to accommodate the additional nodes.
+   - Check if the nodes with the latest configuration are present in the node group.
+   - Apply the eks.amazonaws.com/nodegroup=unschedulable:NoSchedule taint on nodes that do not have the latest labels, to prevent previously updated nodes from being tainted.
+
+3. Upgrade: 
+   - Select a node randomly and drain the Pods from that node.
+   - Cordon the node after all Pods have been evicted and wait for 60 seconds.
+   - Send a termination request to the Auto Scaling group for the cordoned node.
+   - Apply the same process to all nodes in the managed node group to ensure there are no nodes with older versions.
+
+4. Scale Down: 
+   - Decrease the maximum size and desired size of the Auto Scaling group by one in each iteration until the values are the same as before the update started.
+
+This managed node group update behavior ensures that the AMI for the nodes is automatically updated while respecting Pod disruption budgets and maintaining high availability for your applications. For more detailed information about managed node group update phases, you can refer to the official documentation.
+
+The provided EKS cluster has intentionally deployed managed node groups using outdated AMIs. To check the latest AMI version, you can retrieve the information by querying the SSM service:
+```
+$ aws ssm get-parameter --name /aws/service/eks/optimized-ami/1.23/amazon-linux-2/recommended/image_id --region $AWS_DEFAULT_REGION --query "Parameter.Value" --output text
+ami-0c0bc24b5c6ec2fbf
+```
+When you initiate an update for a managed node group, Amazon EKS takes care of automatically updating your nodes. This includes applying the latest security patches and operating system updates if you are using an Amazon EKS optimized AMI. To update the managed node group hosting our sample application, you can use the following command:
+```
+$ aws eks update-nodegroup-version --cluster-name $EKS_CLUSTER_NAME --nodegroup-name $EKS_DEFAULT_MNG_NAME
+{
+    "update": {
+        "id": "edd40821-0430-3cf5-b65b-1ede7e7e620b",
+        "status": "InProgress",
+        "type": "VersionUpdate",
+        "params": [
+            {
+                "type": "Version",
+                "value": "1.23"
+            },
+            {
+                "type": "ReleaseVersion",
+                "value": "1.23.17-20230607"
+            }
+        ],
+        "createdAt": "2023-06-12T00:15:07.759000+00:00",
+        "errors": []
+    }
+}
+```
